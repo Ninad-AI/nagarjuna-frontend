@@ -177,7 +177,7 @@ export default function Home() {
       setCallPhase("listening");
       ttsActiveRef.current = false;
       try {
-        const controller = await startStreamingMic(ws, (level) => {
+        const controller = await startStreamingMic(ws, (level: number) => {
           // Audio level only drives the visual indicator when not in TTS playback
         }, {
           energyThreshold: 0.01,
@@ -465,22 +465,21 @@ export default function Home() {
           <div className="relative w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 md:gap-16">
             {/* Text Content */}
             <div className="relative z-20 flex flex-col items-center md:items-start text-center md:text-left">
-              <h2 className="text-[10px] sm:text-sm md:text-base text-rose-300 font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase mb-3 sm:mb-4 animate-fade-in-up">
+              <h2 className="text-xs sm:text-sm md:text-base text-rose-300 font-bold tracking-[0.2em] uppercase mb-2 sm:mb-4 animate-fade-in-up">
                 • {CREATOR.role}
               </h2>
-              <br />
 
-              <h1 className="text-[3.2rem] sm:text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mix-blend-exclusion">
+              <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight leading-[1.1] mix-blend-exclusion mb-10 sm:mb-12">
                 <span className="block">Nagarjuna</span>
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">
                   Akkineni.
                 </span>
               </h1>
-              <br />
+
               <br />
 
               {/* Desktop CTA */}
-              <div className="animate-fade-in-up mt-6 sm:mt-8 shrink-0 hidden md:block w-full sm:w-auto">
+              <div className="animate-fade-in-up shrink-0 hidden md:block w-full sm:w-auto">
                 <button
                   onClick={handleStartTalking}
                   className="group relative inline-flex items-center justify-center rounded-full bg-white text-black font-bold text-sm sm:text-base tracking-wide w-full sm:w-[220px] h-14 sm:h-16 shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] hover:scale-105 transition-all duration-300"
@@ -506,7 +505,7 @@ export default function Home() {
             </div>
 
             {/* Image */}
-            <div className="relative w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[600px] flex-shrink-0 flex items-center justify-center -translate-x-4 md:-translate-x-8">
+            <div className="relative w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[600px] flex-shrink-0 flex items-center justify-center">
               <div
                 ref={(el) => {
                   avatarRefs.current[1] = el;
@@ -580,8 +579,8 @@ export default function Home() {
                 flex flex-col justify-center overflow-hidden
                 px-6 sm:px-8
                 ${flowState === "payment"
-                  ? "p-6 sm:p-8 md:p-10 min-h-[400px] sm:min-h-[440px]"
-                  : "py-10 sm:py-12 md:py-14 min-h-[180px] sm:min-h-[220px]"
+                  ? "p-6 sm:p-10 min-h-[460px]"
+                  : "py-12 sm:py-16 min-h-[260px]"
                 }
               `}
               style={{ borderRadius: "1.5rem" }}
@@ -593,17 +592,18 @@ export default function Home() {
               <div className="relative z-10 flex flex-col h-full justify-center items-center">
                 <div className="w-full max-w-[340px] flex flex-col justify-center">
 
-                  <div className="text-left w-[90%] sm:w-[320px] mx-auto pl-4 pr-2 sm:pl-6 sm:pr-4 translate-x-4 sm:translate-x-0">
-                    <h3 className="text-[30px] sm:text-[32px] md:text-[34px] font-black mb-1.5 sm:mb-2 text-white tracking-tight leading-tight">
+                  <div className="text-left w-full max-w-[320px] mx-auto mb-6 sm:mb-8">
+                    <h3 className="text-[32px] sm:text-[36px] font-black mb-2 text-white tracking-tight leading-tight">
                       {flowState === "auth" ? "Identification." : "Duration."}
                     </h3>
-                    <p className="text-[14px] sm:text-[15px] md:text-[16px] text-[#A1A1A1] mb-8 sm:mb-9 font-medium leading-snug">
+                    <p className="text-[15px] sm:text-[16px] text-[#A1A1A1] font-medium leading-relaxed">
                       {flowState === "auth"
                         ? "Choose how you would like to proceed."
                         : "Select your preferred session length."}
                     </p>
-                    <br />
                   </div>
+
+                  <br />
 
                   {/* Auth Step */}
                   {flowState === "auth" && (
@@ -621,7 +621,7 @@ export default function Home() {
                   {flowState === "payment" && (
                     <div className="w-full animate-fade-in-up flex flex-col items-center gap-4 sm:gap-5 mt-1 sm:mt-2">
                       {/* Duration Grid — 6-col so top row is 3×2 and bottom row is 2×3 (equal halves) */}
-                      <div className="w-[86%] sm:w-full max-w-[280px] sm:max-w-[320px] self-center grid grid-cols-6 gap-x-2.5 gap-y-2.5 sm:gap-x-3 sm:gap-y-3">
+                      <div className="w-full max-w-[320px] self-center grid grid-cols-6 gap-3">
                         {TIME_OPTIONS.map((opt, index) => {
                           const isSelected = selectedMinutes === opt.minutes;
                           const colSpan = index < 3 ? "col-span-2" : "col-span-3";
@@ -651,12 +651,12 @@ export default function Home() {
                       </div>
 
                       {/* Begin Button */}
-                      <div className="w-full flex justify-center pt-1 sm:pt-2">
+                      <div className="w-full flex justify-center mt-4">
                         <button
                           onClick={handlePayAndStart}
                           disabled={!selectedMinutes}
                           className={`
-                            w-[86%] sm:w-[320px] h-[64px] rounded-2xl font-semibold text-lg transition-all duration-500
+                            w-full max-w-[320px] h-[64px] rounded-2xl font-semibold text-lg transition-all duration-500
                             ${selectedMinutes
                               ? "bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white shadow-[0_10px_40px_rgba(255,80,80,0.35)] hover:scale-[1.02]"
                               : "bg-white/10 text-white/30 border border-white/10 cursor-not-allowed"
